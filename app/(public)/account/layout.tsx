@@ -10,7 +10,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     if (auth.isAuthenticated()) {
         redirect('/');
     }
-
+    console.log('children', children);
     return (
         <>
             <Alert />

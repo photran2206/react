@@ -22,9 +22,10 @@ function Home() {
                 <h1>Hi {user.firstName}!</h1>
                 <p>You&apos;re logged in with Next.js & JWT!!</p>
                 <p><Link href="/users">Manage Users</Link></p>
+                <p><Link href="/products">product</Link></p>
             </>
         );
     } else {
-        return <Spinner />;
+        // return <Spinner />;
     }
 }

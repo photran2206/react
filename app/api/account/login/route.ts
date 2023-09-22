@@ -11,10 +11,8 @@ module.exports = apiHandler({
 async function login(req: Request) {
     const body = await req.json();
     const { user, token } = await usersRepo.authenticate(body);
-
     // return jwt token in http only cookie
     cookies().set('authorization', token, { httpOnly: true });
-
     return user;
 }
 

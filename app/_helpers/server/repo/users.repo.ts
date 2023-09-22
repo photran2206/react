@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { headers } from 'next/headers';
-import { db } from './db';
+import { db } from '../db';
+import { usersMiddleware } from '../middlewares/users.middleware';
 
 const User = db.User;
 
@@ -18,9 +19,10 @@ export const usersRepo = {
 async function authenticate({ username, password }: { username: string, password: string }) {
     const user = await User.findOne({ username });
 
-    if (!(user && bcrypt.compareSync(password, user.hash))) {
-        throw 'Username or password is incorrect';
+    if (!(user && bcrypt.compareSync(password, user.password))) {
+        throw 'Username or password is incorrectaaa';
     }
+
 
     // create a jwt token that is valid for 7 days
     const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
@@ -62,16 +64,22 @@ async function create(params: any) {
 
     // hash password
     if (params.password) {
-        user.hash = bcrypt.hashSync(params.password, 10);
+        user.password = bcrypt.hashSync(params.password, 10);
     }
 
     // save user
-    await user.save();
+    const createUser = await user.save();
+
+    const token = jwt.sign({ sub: createUser.id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+
+    return {
+        user: createUser.toJSON(),
+        token
+    };
 }
 
 async function update(id: string, params: any) {
     const user = await User.findById(id);
-
     // validate
     if (!user) throw 'User not found';
     if (user.username !== params.username && await User.findOne({ username: params.username })) {
@@ -85,11 +93,14 @@ async function update(id: string, params: any) {
 
     // copy params properties to user
     Object.assign(user, params);
-
     await user.save();
 }
 
 async function _delete(id: string) {
+    const check = await usersMiddleware.checkIdUser(id);
+    if(!check.success){
+        throw 'Username is already taken';
+    }
     await User.findByIdAndRemove(id);
 }
 

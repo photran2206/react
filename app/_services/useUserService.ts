@@ -44,9 +44,13 @@ function useUserService(): IUserService {
         },
         register: async (user) => {
             try {
-                await fetch.post('/api/account/register', user);
+                const currentUser = await fetch.post('/api/account/register', user);
+                userStore.setState({ ...initialState, currentUser });
+
                 alertService.success('Registration successful', true);
-                router.push('/account/login');
+                const returnUrl = searchParams.get('returnUrl') || '/';
+                // router.push('/account/login');
+                router.push(returnUrl);
             } catch (error: any) {
                 alertService.error(error);
             }
@@ -65,6 +69,9 @@ function useUserService(): IUserService {
         getCurrent: async () => {
             if (!currentUser) {
                 userStore.setState({ currentUser: await fetch.get('/api/users/current') });
+
+                userStore.setState({ user: await fetch.get('/api/users/current') });
+                console.log('userStore', userStore.getState());
             }
         },
         create: async (user) => {
@@ -80,23 +87,32 @@ function useUserService(): IUserService {
         },
         delete: async (id) => {
             // set isDeleting prop to true on user
+
+            alertService.clear();
             userStore.setState({
                 users: users!.map(x => {
                     if (x.id === id) { x.isDeleting = true; }
                     return x;
                 })
             });
-
-            // delete user
-            const response = await fetch.delete(`/api/users/${id}`);
-
-            // remove deleted user from state
-            userStore.setState({ users: users!.filter(x => x.id !== id) });
-
-            // logout if the user deleted their own record
-            if (response.deletedSelf) {
-                router.push('/account/login');
+            try {
+                const response = await fetch.delete(`/api/users/${id}`);
+                // remove deleted user from state
+                userStore.setState({ users: users!.filter(x => x.id !== id) });
+                if (response.deletedSelf) {
+                    router.push('/account/login');
+                }
+            } catch (error: any) {
+                alertService.error(error);
+                userStore.setState({
+                    users: users!.map(x => {
+                        if (x.id === id) { x.isDeleting = false; }
+                        return x;
+                    })
+                });
             }
+            // logout if the user deleted their own record
+
         }
     }
 };

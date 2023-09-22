@@ -14,14 +14,14 @@ function Layout({ children }: { children: React.ReactNode }) {
                 {children}
 
                 {/* credits */}
-                <div className="text-center mt-4">
+                {/* <div className="text-center mt-4">
                     <p>
                         <a href="https://jasonwatmore.com/next-js-13-app-router-mongodb-user-rego-and-login-tutorial-with-example" target="_blank">Next.js 13 + App Router + MongoDB - User Rego and Login Tutorial with Example</a>
                     </p>
                     <p>
                         <a href="https://jasonwatmore.com" target="_blank">JasonWatmore.com</a>
                     </p>
-                </div>
+                </div> */}
             </body>
         </html>
     );
