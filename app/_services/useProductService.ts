@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useAlertService } from '_services';
 import { useFetch } from '_helpers/client';
@@ -43,6 +42,7 @@ function useProductService(): IProductService {
             try {
                 productStore.setState({ loading: true, products: undefined });
                 const data = await fetch.get(`/api/products/${id}`);
+                console.log('data', data);
                 productStore.setState({ product: data, loading: false });
             } catch (error: any) {
                 handleApiError(error);

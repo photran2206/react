@@ -24,6 +24,7 @@ function Users() {
                     <tr>
                         <th style={{ width: '30%' }}>Name</th>
                         <th style={{ width: '30%' }}>Price</th>
+                        <th style={{ width: '30%' }}>Category</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,7 @@ function Users() {
                 <tr key={product.name}>
                     <td>{product.name}</td>
                     <td>{product.price}</td>
+                    <th style={{ width: '30%' }}>Category</th>
                     <td style={{ whiteSpace: 'nowrap' }}>
                         <Link href={`/products/edit/${product.id}`} className="btn btn-sm btn-primary me-1">Edit</Link>
                         <button onClick={() => productService.delete(product.id)} className="btn btn-sm btn-danger btn-delete-product" style={{ width: '60px' }} disabled={product.isDeleting}>

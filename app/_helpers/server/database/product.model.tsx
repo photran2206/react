@@ -11,21 +11,27 @@ function productuserModel() {
     const schema = new Schema({
         name: { type: String, required: true },
         price: { type: Number, required: true },
+        category_id:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Category",
+        },
+        
     }, {
-        // add createdAt and updatedAt timestamps
-        timestamps: true
-    });
+    // add createdAt and updatedAt timestamps
+    timestamps: true
+});
 
-    schema.set('toJSON', {
-        virtuals: true,
-        versionKey: false,
-        // transform: function (doc, ret) {
-        //     delete ret._id;
-        //     delete ret.password;
-        // }
-    });
+schema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    // transform: function (doc, ret) {
+    //     delete ret._id;
+    //     delete ret.password;
+    // }
+});
 
-    return mongoose.models.Product || mongoose.model('Product', schema);
+return mongoose.models.Product || mongoose.model('Product', schema);
 }
 
 export default productuserModel;

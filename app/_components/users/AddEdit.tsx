@@ -12,7 +12,7 @@ function AddEdit({ title, user }: { title: string, user?: any }) {
     const router = useRouter();
     const alertService = useAlertService();
     const userService = useUserService();
-
+    console.log('user', user);
     // get functions to build form with useForm() hook
     const { register, handleSubmit, reset, formState } = useForm({ defaultValues: user });
     const { errors } = formState;

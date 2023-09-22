@@ -56,6 +56,7 @@ function useUserService(): IUserService {
             }
         },
         getAll: async () => {
+            console.log('vao 2');
             userStore.setState({ users: await fetch.get('/api/users') });
         },
         getById: async (id) => {
@@ -71,7 +72,6 @@ function useUserService(): IUserService {
                 userStore.setState({ currentUser: await fetch.get('/api/users/current') });
 
                 userStore.setState({ user: await fetch.get('/api/users/current') });
-                console.log('userStore', userStore.getState());
             }
         },
         create: async (user) => {

@@ -34,6 +34,7 @@ async function authenticate({ username, password }: { username: string, password
 }
 
 async function getAll() {
+    console.log('vao 4')
     return await User.find();
 }
 

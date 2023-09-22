@@ -4,42 +4,40 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import { useAlertService, useProductService } from '_services';
+import { useAlertService, useCategoryService } from '_services';
 
 export { AddEdit };
 
-function AddEdit({ title, product, category }: { title: string, product?: any, category?: any }) {
+function AddEdit({ title, category }: { title: string, category?: any }) {
     const router = useRouter();
     const alertService = useAlertService();
-    const productService = useProductService();
-
-    console.log('category', category);
+    const categoryService = useCategoryService();
 
     // get functions to build form with useForm() hook
-    const { register, handleSubmit, reset, formState } = useForm({ defaultValues: product });
+    const { register, handleSubmit, reset, formState } = useForm({ defaultValues: category });
     const { errors } = formState;
 
     const fields = {
         name: register('name', { required: 'Name is required' }),
-        price: register('price', { required: 'price is required' }),
-        category: register('category_id', { required: 'category is required' })
+        // price: register('price', { required: 'price is required' }),
     };
+
 
     async function onSubmit(data: any) {
         alertService.clear();
         try {
             // create or update user based on user prop
             let message;
-            if (product) {
-                await productService.update(product.id, data);
-                message = 'Product updated';
+            if (category) {
+                await categoryService.update(category.id, data);
+                message = 'category updated';
             } else {
-                await productService.create(data);
-                message = 'Product added';
+                await categoryService.create(data);
+                message = 'category added';
             }
 
             // redirect to user list with success message
-            router.push('/products');
+            router.push('/categories');
             alertService.success(message, true);
         } catch (error: any) {
             alertService.error(error);
@@ -55,23 +53,6 @@ function AddEdit({ title, product, category }: { title: string, product?: any, c
                     <input {...fields.name} type="text" className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.firstName?.message?.toString()}</div>
                 </div>
-                <div className="mb-3 col">
-                    <label className="form-label">Price</label>
-                    <input {...fields.price} type="text" className={`form-control ${errors.price ? 'is-invalid' : ''}`} />
-                    <div className="invalid-feedback">{errors.price?.message?.toString()}</div>
-                </div>
-
-                <div className="mb-3 col">
-                    <label className="form-label">Chon category</label>
-                    <select {...fields.category}>
-                        {category?.map((cate: any) => {
-                            return <option key={cate.name} value={cate.id}>
-                                {cate.name}
-                            </option>
-                        })}
-                    </select>
-                    <div className="invalid-feedback">{errors.price?.message?.toString()}</div>
-                </div>
 
                 <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary me-2">
                     {formState.isSubmitting && <span className="spinner-border spinner-border-sm me-1"></span>}
@@ -79,7 +60,7 @@ function AddEdit({ title, product, category }: { title: string, product?: any, c
                 </button>
                 <button onClick={() => reset()} type="button" disabled={formState.isSubmitting} className="btn btn-secondary">Reset</button>
             </div>
-            <Link href="/products" className="btn btn-link">Cancel</Link>
+            <Link href="/categories" className="btn btn-link">Cancel</Link>
         </form >
     );
 }

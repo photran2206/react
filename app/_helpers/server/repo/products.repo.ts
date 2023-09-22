@@ -1,6 +1,3 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { headers } from 'next/headers';
 import { db } from '../db';
 
 const Product = db.Product;
@@ -30,7 +27,7 @@ export const productsRepo = {
 // }
 
 async function getAll() {
-    return await Product.find();
+    return await Product.find().populate("category_id", "-createdAt -updatedAt");
 }
 
 async function getById(id: string) {
@@ -49,12 +46,8 @@ async function create(params: any) {
         throw 'name "' + params.name + '" is already taken';
     }
 
-    const user = new Product(params);
-
-    // hash password
-  
-    // save user
-    await user.save();
+    const product = new Product(params);
+    await product.save();
 }
 
 async function update(id: string, params: any) {
@@ -66,10 +59,8 @@ async function update(id: string, params: any) {
         throw 'productName "' + params.productName + '" is already taken';
     }
 
-
     // copy params properties to product
     Object.assign(product, params);
-
     await product.save();
 }
 

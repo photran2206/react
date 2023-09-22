@@ -23,6 +23,7 @@ function Home() {
                 <p>You&apos;re logged in with Next.js & JWT!!</p>
                 <p><Link href="/users">Manage Users</Link></p>
                 <p><Link href="/products">product</Link></p>
+                <p><Link href="/categories">category</Link></p>
             </>
         );
     } else {

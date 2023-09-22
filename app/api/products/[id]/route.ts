@@ -22,15 +22,15 @@ async function update(req: Request, { params: { id } }: any) {
 
 update.schema = joi.object({
     name: joi.string(),
-    price: joi.string(),
+    price: joi.number(),
 });
 
 async function _delete(req: Request, { params: { id } }: any) {
     await productsRepo.delete(id);
 
     // auto logout if deleted self
-    if (id === req.headers.get('userId')) {
-        cookies().delete('authorization');
-        return { deletedSelf: true };
-    }
+    // if (id === req.headers.get('userId')) {
+    //     cookies().delete('authorization');
+    //     return { deletedSelf: true };
+    // }
 }

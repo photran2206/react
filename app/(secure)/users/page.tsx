@@ -14,6 +14,8 @@ function Users() {
 
     useEffect(() => {
         userService.getAll();
+
+        console.log('vao 1');
     }, []);
 
     return (

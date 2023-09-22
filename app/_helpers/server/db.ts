@@ -6,11 +6,13 @@
 // mongoose.Promise = global.Promise;
 
 import productuserModel from './database/product.model';
-import userModel from './database/user.model'
+import userModel from './database/user.model';
+import categoryModel from './database/category.model';
 
 export const db = {
     User: userModel(),
-    Product: productuserModel()
+    Product: productuserModel(),
+    Category: categoryModel()
 };
 
 // mongoose models with schema definitions

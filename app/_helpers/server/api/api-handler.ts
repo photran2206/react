@@ -8,8 +8,6 @@ function apiHandler(handler: any) {
     const wrappedHandler: any = {};
     const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
-    console.log('handler', handler);
-
     // wrap handler methods to add middleware and global error handler
     httpMethods.forEach(method => {
         if (typeof handler[method] !== 'function')

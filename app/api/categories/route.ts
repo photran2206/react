@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import { productsRepo } from '_helpers/server';
+import { categoriesRepo } from '_helpers/server';
 import { apiHandler } from '_helpers/server/api';
 
 module.exports = apiHandler({
@@ -9,17 +9,14 @@ module.exports = apiHandler({
 });
 
 async function getAll() {
-    return await productsRepo.getAll();
+    return await categoriesRepo.getAll();
 }
 
 async function create(req: Request) {
     const body = await req.json();
-    console.log('presss', body);
-    await productsRepo.create(body);
+    await categoriesRepo.create(body);
 }
 
 create.schema = joi.object({
     name: joi.string().required(),
-    price: joi.string().required(),
-    category_id: joi.string().required()
 });

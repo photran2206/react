@@ -5,10 +5,14 @@ import { apiHandler } from '_helpers/server/api';
 
 module.exports = apiHandler({
     GET: getAll,
-    POST: create
+    POST: create,
+    DELETE: abc
+
 });
 
 async function getAll() {
+
+    console.log('vao 3');
     return await usersRepo.getAll();
 }
 
@@ -16,6 +20,12 @@ async function create(req: Request) {
     const body = await req.json();
     await usersRepo.create(body);
 }
+
+async function abc(req: Request) {
+    const body = await req.json();
+    await usersRepo.create(body);
+}
+
 
 create.schema = joi.object({
     firstName: joi.string().required(),
